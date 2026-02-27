@@ -1,0 +1,29 @@
+{
+  "name": "active-host-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP (Model Context Protocol) server for Active Host — let AI agents manage your server fleet",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "active-host-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "dotenv": "^17.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

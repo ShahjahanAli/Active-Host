@@ -5,6 +5,20 @@
 /.pnp
 .pnp.js
 
+# Clerk
+/.clerk
+
+# mcp-server
+/mcp-server/node_modules
+/mcp-server/package-lock.json
+
+# server-agent
+/server-agent/node_modules
+/server-agent/package-lock.json
+
+# package-locks
+/package-lock.json
+
 # testing
 /coverage
 

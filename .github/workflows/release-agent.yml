@@ -1,0 +1,66 @@
+name: Release Agent
+
+on:
+  push:
+    tags:
+      - "agent/v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build & Release Server Agent
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server-agent
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: server-agent/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Package agent archive
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p release/active-host-agent
+          cp -r server-agent/dist server-agent/package.json server-agent/.env.example release/active-host-agent/
+          cd release
+          tar -czf "../active-host-agent-${{ github.ref_name }}.tar.gz" active-host-agent
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Agent ${{ github.ref_name }}"
+          generate_release_notes: true
+          files: active-host-agent-${{ github.ref_name }}.tar.gz
+          body: |
+            ## Active Host — Server Agent Release
+
+            Download the archive, extract it to your server, configure `.env`, and run:
+
+            ```bash
+            tar -xzf active-host-agent-*.tar.gz
+            cd active-host-agent
+            cp .env.example .env
+            # Edit .env with your APP_URL, AGENT_ID, AGENT_API_KEY
+            npm install --omit=dev
+            node dist/index.js
+            ```
+
+            See [docs/AGENT-INSTALL.md](https://github.com/${{ github.repository }}/blob/main/docs/AGENT-INSTALL.md) for systemd setup.
