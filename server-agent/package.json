@@ -1,13 +1,31 @@
 {
-  "name": "remoteservermanager-server-agent",
+  "name": "rsm-agent",
   "version": "0.1.0",
-  "private": true,
-  "description": "Express-based remote host agent for Remote Server Manager",
+  "description": "Remote Server Manager — lightweight host agent. Poll-based command execution & metrics push.",
+  "homepage": "https://github.com/your-org/rsm-agent#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/rsm-agent.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "main": "dist/index.js",
+  "bin": {
+    "rsm-agent": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    ".env.example"
+  ],
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
+    "postbuild": "node -e \"require('fs').chmodSync('dist/index.js', '755')\"",
     "start": "node dist/index.js",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },

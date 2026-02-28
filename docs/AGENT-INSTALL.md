@@ -104,8 +104,12 @@ COMMAND_TIMEOUT_MS=300000
 
 ## Step 5 — Install dependencies and build
 
+> **Skip this step if you used `npm install -g rsm-agent`** — the package ships pre-built.
+
+If you cloned from GitHub:
+
 ```bash
-cd /opt/rsm-agent/server-agent
+cd /opt/rsm-agent
 npm install
 npm run build    # compiles TypeScript → dist/
 ```
@@ -130,9 +134,15 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/opt/rsm-agent/server-agent
-EnvironmentFile=/opt/rsm-agent/server-agent/.env
-ExecStart=/usr/bin/node dist/index.js
+# npm global install:
+EnvironmentFile=/etc/rsm-agent/.env
+ExecStart=/usr/bin/rsm-agent
+
+# -- OR -- git clone / manual build:
+# WorkingDirectory=/opt/rsm-agent
+# EnvironmentFile=/opt/rsm-agent/.env
+# ExecStart=/usr/bin/node /opt/rsm-agent/dist/index.js
+
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -182,10 +192,18 @@ curl http://localhost:4800/status
 
 ## Updating the Agent
 
+### npm global install
+
+```bash
+npm install -g rsm-agent@latest
+sudo systemctl restart rsm-agent
+```
+
+### Git clone
+
 ```bash
 cd /opt/rsm-agent
 git pull
-cd server-agent
 npm install
 npm run build
 sudo systemctl restart rsm-agent
@@ -199,8 +217,13 @@ If you prefer PM2:
 
 ```bash
 npm install -g pm2
-cd /opt/rsm-agent/server-agent
-pm2 start dist/index.js --name rsm-agent --env-file .env
+
+# npm global install:
+pm2 start rsm-agent --name rsm-agent --env-file /etc/rsm-agent/.env
+
+# -- OR -- git clone:
+# pm2 start /opt/rsm-agent/dist/index.js --name rsm-agent --env-file /opt/rsm-agent/.env
+
 pm2 save
 pm2 startup    # follow the printed instructions to enable on boot
 ```
@@ -282,7 +305,13 @@ sudo systemctl stop rsm-agent
 sudo systemctl disable rsm-agent
 sudo rm /etc/systemd/system/rsm-agent.service
 sudo systemctl daemon-reload
-sudo rm -rf /opt/rsm-agent
+
+# npm global install:
+npm uninstall -g rsm-agent
+sudo rm -rf /etc/rsm-agent
+
+# -- OR -- git clone:
+# sudo rm -rf /opt/rsm-agent
 ```
 
 Then delete the host from the RSM dashboard to remove all associated data.
