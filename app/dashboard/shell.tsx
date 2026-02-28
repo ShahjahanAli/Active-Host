@@ -41,7 +41,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       items: [
         { label: "Overview",   href: VIEW_PATHS.overview,   icon: <IconGrid /> },
         { label: "Hosts",      href: VIEW_PATHS.hosts,      icon: <IconServer />,   badge: counters.totalHosts },
-        { label: "Commands",   href: VIEW_PATHS.commands,   icon: <IconTerminal />, badge: counters.runningCommands || undefined },
+        { label: "Terminal",   href: VIEW_PATHS.terminal,   icon: <IconTerminal /> },
+        { label: "Commands",   href: VIEW_PATHS.commands,   icon: <IconList />, badge: counters.runningCommands || undefined },
       ],
     },
     {
@@ -267,7 +268,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   );
 
   /* ── No-host banner ───────────────────────────────────────────── */
-  const hostRequiredViews: typeof HOST_VIEWS = ["docker", "nginx", "ssl", "firewall", "cron", "ssh", "fail2ban", "apps"];
+  const hostRequiredViews: typeof HOST_VIEWS = ["docker", "nginx", "ssl", "firewall", "cron", "ssh", "fail2ban", "apps", "terminal"];
   const needsHost = (hostRequiredViews as string[]).includes(currentView) && !selectedHostId;
 
   return (

@@ -7,7 +7,8 @@ export type View =
   | "notifications" | "apps" | "docker"
   | "nginx" | "ssl" | "firewall" | "cron"
   | "ssh" | "fail2ban"
-  | "projects" | "pipeline";
+  | "projects" | "pipeline"
+  | "terminal";
 
 /* ─── Style constants ────────────────────────────────────────────── */
 export const inputCls =
@@ -35,6 +36,7 @@ export const VIEW_TITLES: Record<View, { title: string; subtitle: string }> = {
   fail2ban:      { title: "Fail2ban",           subtitle: "Brute-force protection & IP banning" },
   projects:      { title: "Projects",           subtitle: "CI/CD projects deployed on your servers" },
   pipeline:      { title: "Pipeline Runs",      subtitle: "Deployment history and live logs" },
+  terminal:      { title: "Terminal",           subtitle: "Interactive shell — run commands directly on your servers" },
 };
 
 /* ─── Format helpers ─────────────────────────────────────────────── */

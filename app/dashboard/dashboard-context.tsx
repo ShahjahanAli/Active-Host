@@ -69,6 +69,7 @@ export const VIEW_PATHS: Record<View, string> = {
   fail2ban:      "/dashboard/fail2ban",
   projects:      "/dashboard/projects",
   pipeline:      "/dashboard/pipeline",
+  terminal:      "/dashboard/terminal",
 };
 
 /** Map a URL pathname back to a View (falls back to "overview") */
@@ -82,7 +83,7 @@ export function pathToView(pathname: string): View {
 /** Views that require a selected host to be useful */
 export const HOST_VIEWS: View[] = [
   "monitoring", "commands", "docker", "nginx", "ssl",
-  "firewall", "cron", "ssh", "fail2ban", "apps",
+  "firewall", "cron", "ssh", "fail2ban", "apps", "terminal",
 ];
 
 /* ─── Context shape ──────────────────────────────────────────────── */
